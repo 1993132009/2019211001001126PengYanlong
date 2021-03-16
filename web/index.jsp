@@ -11,8 +11,10 @@
     <title>JSP - Hello World</title>
   </head>
   <body>
-    <h1>Hello world!!!</h1>
+    <h1>-Hello world!!!</h1>
     <br/>
-    <a href="hello-servlet">Hello Servlet</a>
+    <a href="Myjsp.jsp">Hello Servlet</a>
+    <br>
+    <a href="week2/week2Exercise2.jsp">Register Servlet</a>
   </body>
 </html>
