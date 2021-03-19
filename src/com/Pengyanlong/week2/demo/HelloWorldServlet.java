@@ -18,8 +18,7 @@ public class HelloWorldServlet extends HttpServlet {
         doPost(request,response);
     }
     public void doPost(HttpServletRequest request,HttpServletResponse response)
-            throws ServletException,IOException{
-        response.setContentType("text/html;charset=GBK");
+            throws ServletException,IOException{response.setContentType("text/html;charset=GBK");
 
         PrintWriter out = response.getWriter();
         String Name = request.getParameter("name");

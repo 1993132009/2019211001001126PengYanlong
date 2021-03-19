@@ -15,6 +15,6 @@
     <br/>
     <a href="Myjsp.jsp">Hello Servlet</a>
     <br>
-    <a href="week2/week2Exercise2.jsp">Register Servlet</a>
+    <a href="Register.jsp">Register Servlet</a>
   </body>
 </html>
