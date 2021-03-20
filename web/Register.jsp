@@ -13,7 +13,7 @@
         function isPasswordValid() {
             var password=document.getElementById("password").value;
             if(password.length<8) {
-                alert("password length should not less than 8!");
+                alert("Password length should not less than 8!");
                 return false;
             }
             return true;
@@ -27,7 +27,7 @@
                 if (x[i] == '@' && atpos == -1) {
                     atpos = i+1;
                 } else if (x[i] == '@' && ~atpos){
-                    alert("wrong email!");
+                    alert("Wrong email!");
                     return false;
                 }
                 if (x[i] == '.') {
@@ -36,7 +36,7 @@
             }
 
             if (atpos<=1 || dotpos<atpos+2 || dotpos == -1) {
-                alert("wrong email!");
+                alert("Wrong email!");
                 return false;
             }
             return true;
@@ -45,12 +45,12 @@
         function isDateValid() {
             var date = document.getElementById("birth").value;
             if (date.length == 10 && date[4] == date[7] && date[4] == '-') return true;
-            alert("wrong date!");
+            alert("Wrong date!");
             return false;
         }
         function AC() {
             if (document.getElementById("username").value.length == 0) {
-                alert("username should not empty!");
+                alert("Username should not empty!");
                 return false;
             } else if (isPasswordValid() == false) {
                 return false;
@@ -59,7 +59,7 @@
             } else if (isDateValid() == false) {
                 return false;
             }
-            alert("accepted");
+            alert("Accepted");
             return true;
         }
     </script>

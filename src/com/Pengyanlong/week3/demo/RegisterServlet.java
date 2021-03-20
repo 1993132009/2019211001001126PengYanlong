@@ -24,7 +24,7 @@ public class RegisterServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
-        String sex = request.getParameter("sex");
+        String gender = request.getParameter("sex");
         String birth = request.getParameter("birth");
 
         out.println("<html><body>");
@@ -35,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
             out.println("username is : " + username + "<br>");
             out.println("password is : " + password + "<br>");
             out.println("email is : " + email + "<br>");
-            out.println("sex is : " + sex + "<br>");
+            out.println("gender is : " + gender + "<br>");
             out.println("birth is : " + birth + "<br>");
             //
         } catch (NumberFormatException e) {
