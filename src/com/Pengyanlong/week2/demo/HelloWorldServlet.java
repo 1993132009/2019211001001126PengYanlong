@@ -32,7 +32,7 @@ public class HelloWorldServlet extends HttpServlet {
             out.println("Name is : " + Name + "<br>");
             out.println("ID is : " + ID + "<br>");
         } catch (NumberFormatException e) {
-            out.println("inout is error！" + "<br>");
+            out.println("input is error！" + "<br>");
         }
         out.println("</html></body>");
     }

@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-    <!--1-->
+    <!--1主页-->
     <servlet>
         <servlet-name>HelloWorldServlet</servlet-name>
         <servlet-class>com.Pengyanlong.week2.demo.HelloWorldServlet</servlet-class>
@@ -12,15 +12,71 @@
         <servlet-name>HelloWorldServlet</servlet-name>
         <url-pattern>/hello</url-pattern>
     </servlet-mapping>
-    <!--2-->
+
+    <!--2注册-->
     <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>com.Pengyanlong.week3.demo.RegisterServlet</servlet-class>
+        <init-param>
+            <param-name>driver</param-name>
+            <param-value>com.microsoft.sqlserver.jdbc.SQLServerDriver</param-value>
+        </init-param>
+        <init-param>
+            <param-name>url</param-name>
+            <param-value>jdbc:sqlserver://localhost:1433;DatabaseName=userDB</param-value>
+        </init-param>
+        <init-param>
+            <param-name>username</param-name>
+            <param-value>sa</param-value>
+        </init-param>
+        <init-param>
+            <param-name>password</param-name>
+            <param-value>20011120</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/Rigister</url-pattern>
     </servlet-mapping>
-    
+
+    <!--3数据库-->
+    <!--
+    <servlet>
+        <servlet-name>JDBCDemoServlet</servlet-name>
+        <servlet-class>com.Pengyanlong.week4.demo.ConfigDemoServlet</servlet-class>
+    -->
+<!--        <init-param>-->
+<!--            <param-name>driver</param-name>-->
+<!--            <param-value>com.microsoft.sqlserver.jdbc.SQLServerDriver</param-value>-->
+<!--        </init-param>-->
+<!--        <init-param>-->
+<!--            <param-name>url</param-name>-->
+<!--            <param-value>jdbc:sqlserver://localhost:1433;DatabaseName=userDB</param-value>-->
+<!--        </init-param>-->
+<!--        <init-param>-->
+<!--            <param-name>username</param-name>-->
+<!--            <param-value>sa</param-value>-->
+<!--        </init-param>-->
+<!--        <init-param>-->
+<!--            <param-name>password</param-name>-->
+<!--            <param-value>20011120</param-value>-->
+<!--        </init-param>-->
+<!--        <load-on-startup>1</load-on-startup>-->
+    <!--
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JDBCDemoServlet</servlet-name>
+        <url-pattern>/JDBC</url-pattern>
+    </servlet-mapping>
+    -->
+    <servlet>
+        <servlet-name>ConfigDemoServlet</servlet-name>
+        <servlet-class>com.Pengyanlong.week4.demo.ConfigDemoServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ConfigDemoServlet</servlet-name>
+        <url-pattern>/config</url-pattern>
+    </servlet-mapping>
+
 </web-app>

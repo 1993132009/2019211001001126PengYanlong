@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>register</title>
+    <title>Register</title>
     <script>
         function isPasswordValid() {
             var password=document.getElementById("password").value;
