@@ -18,10 +18,8 @@
             }
             return true;
         }
-
         function isMailValid(){
             var x=document.getElementById("email").value;
-
             var atpos = -1, dotpos = -1;
             for (var i = 0; i < x.length; i++) {
                 if (x[i] == '@' && atpos == -1) {
@@ -34,14 +32,12 @@
                     dotpos = i+1;
                 }
             }
-
             if (atpos<=1 || dotpos<atpos+2 || dotpos == -1) {
                 alert("Wrong email!");
                 return false;
             }
             return true;
         }
-
         function isDateValid() {
             var date = document.getElementById("birth").value;
             if (date.length == 10 && date[4] == date[7] && date[4] == '-') return true;
@@ -66,9 +62,8 @@
 </head>
 
 <body>
-
 <p>New User Registration!</p>
-<form method="post" action="Rigister">
+<form method="post" action="${pageContext.request.contextPath}/Rigister">
     Username:<input type="text" id="username" name="username"><br/>
     Password:<input id="password" name="password" type="password"><br/>
     E-mail:<input id="email" name="email" type="email"><br/>

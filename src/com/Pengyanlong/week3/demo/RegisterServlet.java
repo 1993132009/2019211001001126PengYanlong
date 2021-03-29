@@ -44,9 +44,10 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String gender = request.getParameter("sex");
         String birth = request.getParameter("birth");
-        java.sql.Date birthdate = java.sql.Date.valueOf(birth);
+        java.sql.Date birthD = java.sql.Date.valueOf(birth);
         /*
         out.println("<html><body>");
+        System.out.println("-->I am in doPost()");
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         out.println("Date and Time: " + df.format(new Date()) + "<br>" + "<br>");
         try {
@@ -60,7 +61,6 @@ public class RegisterServlet extends HttpServlet {
         }
         out.println("</html></body>");
         */
-        System.out.println("-->I am in doPost()");
 
         String sqlAdd = "insert into userTB values(?,?,?,?,?)";
         try {
@@ -69,7 +69,7 @@ public class RegisterServlet extends HttpServlet {
             ps.setString(2,password);
             ps.setString(3,email);
             ps.setString(4,gender);
-            ps.setDate(5, birthdate);
+            ps.setDate(5, birthD);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -80,19 +80,21 @@ public class RegisterServlet extends HttpServlet {
             ResultSet rs=con.createStatement().executeQuery(sqlQuery);
             out.print("<table border="+3+">");
             out.print("<tr>");
-                out.print("<th>UserName</th>");
-                out.print("<th>PassWord</th>");
-                out.print("<th>Email</th>");
-                out.print("<th>Gender</th>");
-                out.print("<th>Birth</th>");
+            out.print("<th>ID</th>");
+            out.print("<th>UserName</th>");
+            out.print("<th>PassWord</th>");
+            out.print("<th>Email</th>");
+            out.print("<th>Gender</th>");
+            out.print("<th>Birth</th>");
             out.print("</tr>");
             while (rs.next()) {
                 out.print("<tr>");
-                    out.print("<td>"+rs.getString("username")+"</td>");
-                    out.print("<td>"+rs.getString("password")+"</td>");
-                    out.print("<td>"+rs.getString("email")+"</td>");
-                    out.print("<td>"+rs.getString("gender")+"</td>");
-                    out.print("<td>"+rs.getDate("birthdate")+"</td>");
+                out.print("<td>"+rs.getInt("id")+"</td>");
+                out.print("<td>"+rs.getString("username")+"</td>");
+                out.print("<td>"+rs.getString("password")+"</td>");
+                out.print("<td>"+rs.getString("email")+"</td>");
+                out.print("<td>"+rs.getString("gender")+"</td>");
+                out.print("<td>"+rs.getDate("birthdate")+"</td>");
                 out.print("<tr>");
             }
             out.print("</table>");
