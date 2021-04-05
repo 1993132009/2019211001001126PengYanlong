@@ -61,8 +61,7 @@
     </script>
 </head>
 
-<body>
-<p>New User Registration!</p>
+<%@include file="header.jsp"%>
 <form method="post" action="${pageContext.request.contextPath}/Rigister">
     Username:<input type="text" id="username" name="username"><br/>
     Password:<input id="password" name="password" type="password"><br/>
@@ -72,6 +71,4 @@
     Birth:<input type="text" id="birth" name="birth"><br/>
     <input type="submit" value="Register" onclick="AC()">
 </form>
-
-</body>
-</html>
+<%@include file="footer.jsp"%>
