@@ -26,7 +26,7 @@ public class ConfigDemoServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ServletConfig config=getServletConfig();
+        ServletConfig config = getServletConfig();
         String Name = config.getInitParameter("name");
         String ID = config.getInitParameter("STid");
 

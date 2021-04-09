@@ -32,6 +32,7 @@ public class JDBCDemoServlet extends HttpServlet {
         String username="sa";
         String password="20011120";
         */
+        /*
         ServletConfig config=getServletConfig();
         String driver = config.getInitParameter("driver");
         String url = config.getInitParameter("url");
@@ -46,6 +47,7 @@ public class JDBCDemoServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        */
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

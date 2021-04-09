@@ -1,6 +1,7 @@
 package com.Pengyanlong.week5.demo;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
@@ -11,23 +12,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 
-@WebServlet(name = "LoginServlet",value = "/Login",
-        initParams = {
-                @WebInitParam(name="driver",value = "com.microsoft.sqlserver.jdbc.SQLServerDriver"),
-                @WebInitParam(name="url",value = "jdbc:sqlserver://localhost:1433;DatabaseName=userDB"),
-                @WebInitParam(name="username",value = "sa"),
-                @WebInitParam(name="password",value = "20011120"),
-        },loadOnStartup = 1
-)
+@WebServlet(name = "LoginServlet",value = "/Login")
 public class LoginServlet extends HttpServlet {
     Connection con = null;
     public void init() throws ServletException {
         super.init();
-        ServletConfig config=getServletConfig();
-        String driver = config.getInitParameter("driver");
-        String url = config.getInitParameter("url");
-        String username = config.getInitParameter("username");
-        String password = config.getInitParameter("password");
+        con = (Connection) getServletContext().getAttribute("con");
+        /*
+        ServletContext context = getServletContext();
+        String driver = context.getInitParameter("driver");
+        String url = context.getInitParameter("url");
+        String username = context.getInitParameter("username");
+        String password = context.getInitParameter("password");
         try {
             Class.forName(driver);
             con = DriverManager.getConnection(url,username,password);
@@ -37,6 +33,7 @@ public class LoginServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        */
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -56,17 +53,22 @@ public class LoginServlet extends HttpServlet {
         }
         try {
             ResultSet rs = ps.executeQuery();
-            boolean LGflag=false;
-            while (rs.next()) {
-                LGflag=true;
-                out.println("<h1>Login Successful ! </h1><br/>");
-                out.println("<h1>Welcome "+ username + "</h1><br/>");
-                break;
-            }
-            if(LGflag==false)
-            {
-                out.println("<h1>Login Failed ! </h1><br/>");
-                out.println("<h1>Username or Password Error ! </h1><br/>");
+            if (rs.next()) {
+                //out.println("<h1>Login Successful ! </h1><br/>");
+                //out.println("<h1>Welcome "+ username + "</h1><br/>");
+                request.setAttribute("id",rs.getInt("id"));
+                request.setAttribute("username",rs.getString("username"));
+                request.setAttribute("password",rs.getString("password"));
+                request.setAttribute("email",rs.getString("email"));
+                request.setAttribute("gender",rs.getString("gender"));
+                request.setAttribute("birthdate",rs.getString("birthdate"));
+
+                request.getRequestDispatcher("userInfo.jsp").forward(request,response);
+            } else {
+                //out.println("<h1>Login Failed ! </h1><br/>");
+                //out.println("<h1>Username or Password Error ! </h1><br/>");
+                request.setAttribute("message","Username or Password Error!!!");
+                request.getRequestDispatcher("Login.jsp").forward(request,response);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -76,6 +78,7 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request,response);
     }
+
     public void destroy() {
         super.destroy();
         try {

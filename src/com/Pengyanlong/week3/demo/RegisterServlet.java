@@ -1,6 +1,7 @@
 package com.Pengyanlong.week3.demo;
 
 import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
@@ -12,15 +13,17 @@ import java.io.PrintWriter;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
-@WebServlet(name = "RegisterServlet")
+@WebServlet(name = "RegisterServlet",value="/Register")
 public class RegisterServlet extends HttpServlet {
     Connection con = null;
     public void init() throws ServletException {
-        ServletConfig config=getServletConfig();
-        String driver = config.getInitParameter("driver");
-        String url = config.getInitParameter("url");
-        String username = config.getInitParameter("username");
-        String password = config.getInitParameter("password");
+        super.init();
+        /*
+        ServletContext context = getServletContext();
+        String driver = context.getInitParameter("driver");
+        String url = context.getInitParameter("url");
+        String username = context.getInitParameter("username");
+        String password = context.getInitParameter("password");
         try {
             Class.forName(driver);
             con = DriverManager.getConnection(url,username,password);
@@ -30,9 +33,8 @@ public class RegisterServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request,response);
+        */
+        con = (Connection) getServletContext().getAttribute("con");
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -78,6 +80,7 @@ public class RegisterServlet extends HttpServlet {
         String sqlQuery="select * from userTB";
         try {
             ResultSet rs=con.createStatement().executeQuery(sqlQuery);
+            /*
             out.print("<table border="+3+">");
             out.print("<tr>");
             out.print("<th>ID</th>");
@@ -98,10 +101,22 @@ public class RegisterServlet extends HttpServlet {
                 out.print("<tr>");
             }
             out.print("</table>");
+            */
+            request.setAttribute("rsname",rs);
+            request.getRequestDispatcher("userList.jsp").forward(request,response);
+            System.out.println("I am in RegisterServlet -->doPost()--> after forward()");
+
+            response.sendRedirect("Login.jsp");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doPost(request,response);
+    }
+
     public void destroy() {
         super.destroy();
         try {

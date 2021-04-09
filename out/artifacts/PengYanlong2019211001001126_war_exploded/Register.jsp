@@ -62,7 +62,7 @@
 </head>
 
 <%@include file="header.jsp"%>
-<form method="post" action="${pageContext.request.contextPath}/Rigister">
+<form method="post" action="${pageContext.request.contextPath}/Register">
     Username:<input type="text" id="username" name="username"><br/>
     Password:<input id="password" name="password" type="password"><br/>
     E-mail:<input id="email" name="email" type="email"><br/>
