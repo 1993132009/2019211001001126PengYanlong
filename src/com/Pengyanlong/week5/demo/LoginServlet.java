@@ -1,5 +1,8 @@
 package com.Pengyanlong.week5.demo;
 
+import com.Pengyanlong.dao.UserDao;
+import com.Pengyanlong.model.User;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -40,8 +43,22 @@ public class LoginServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-//        out.println(username);
-//        out.println(password);
+
+        UserDao userDao = new UserDao();
+        try {
+            User user = userDao.findByUsernamePassword(con,username,password);
+            if(user!=null) {
+                request.setAttribute("user",user);
+                request.getRequestDispatcher("WEB-INF/views/userInfo.jsp").forward(request,response);
+            } else {
+                request.setAttribute("message","Username or Password Error!!!");
+                request.getRequestDispatcher("WEB-INF/views/Login.jsp").forward(request,response);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        /*
         String sqlQuery="select * from userTB where username=? and password=?";
         PreparedStatement ps = null;
         try {
@@ -54,8 +71,6 @@ public class LoginServlet extends HttpServlet {
         try {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                //out.println("<h1>Login Successful ! </h1><br/>");
-                //out.println("<h1>Welcome "+ username + "</h1><br/>");
                 request.setAttribute("id",rs.getInt("id"));
                 request.setAttribute("username",rs.getString("username"));
                 request.setAttribute("password",rs.getString("password"));
@@ -65,18 +80,18 @@ public class LoginServlet extends HttpServlet {
 
                 request.getRequestDispatcher("userInfo.jsp").forward(request,response);
             } else {
-                //out.println("<h1>Login Failed ! </h1><br/>");
-                //out.println("<h1>Username or Password Error ! </h1><br/>");
                 request.setAttribute("message","Username or Password Error!!!");
                 request.getRequestDispatcher("Login.jsp").forward(request,response);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        */
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request,response);
+        //doPost(request,response);
+        request.getRequestDispatcher("WEB-INF/views/Login.jsp").forward(request,response);
     }
 
     public void destroy() {
