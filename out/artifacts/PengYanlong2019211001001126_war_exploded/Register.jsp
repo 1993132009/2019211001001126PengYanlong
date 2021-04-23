@@ -66,7 +66,7 @@
     Username:<input type="text" id="username" name="username"><br/>
     Password:<input id="password" name="password" type="password"><br/>
     E-mail:<input id="email" name="email" type="email"><br/>
-    Gender:<input name="sex" type="radio" value="male">mal
+    Gender:<input name="sex" type="radio" value="male">male
     <input type="radio" name="sex" value="female">female<br/>
     Birth:<input type="text" id="birth" name="birth"><br/>
     <input type="submit" value="Register" onclick="AC()">
