@@ -2,291 +2,180 @@ package com.Pengyanlong.dao;
 
 import com.Pengyanlong.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class UserDao implements IUserDao{
-    @Override
+public class UserDao implements  IUserDao {
     public boolean saveUser(Connection con, User user) throws SQLException {
-        String sql="insert into userTB values(?,?,?,?,?,?)";
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setInt(1,user.getId());
-            ps.setString(2,user.getUsername());
-            ps.setString(3,user.getPassword());
-            ps.setString(4,user.getEmail());
-            ps.setString(5,user.getGender());
-            ps.setDate(6, (java.sql.Date) user.getBirthDate());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        try{
+            Statement createDbStatement = con.createStatement();
+            String dbRequire="insert into userTB(username,password,email,gender,birthdate) values('"+user.getUsername()+"','"+user.getPassword()+"','"+user.getEmail()+"','"+user.getGender()+"','"+user.getBirthDate()+"')";
+            createDbStatement.executeUpdate(dbRequire);
+            System.out.println("insert "+user.toString()+"success");
+            return true;
+        }catch(Exception e) {
+            System.out.println(e);
         }
-        return ps.execute();
+        return false;
     }
 
-    @Override
     public int deleteUser(Connection con, User user) throws SQLException {
-        String sql="delete from userTB where username=? and password=?";
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setString(1,user.getUsername());
-            ps.setString(2,user.getPassword());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        try{
+            Statement createDbStatement = con.createStatement();
+            String dbRequire="delete from userTB where id="+user.getId();
+            createDbStatement.executeUpdate(dbRequire);
+            System.out.println("delete "+user.getId()+"success");
+            return 1;
+        }catch(Exception e) {
+            System.out.println(e);
         }
-        return ps.executeUpdate();
+        return 0;
     }
 
-    @Override
     public int updateUser(Connection con, User user) throws SQLException {
-        String sql="update userTB set username=?,password=?,email=?,gender=?,birthdate=? where id=?";
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(sql);
-            ps.setString(1,user.getUsername());
-            ps.setString(2,user.getPassword());
-            ps.setString(3,user.getEmail());
-            ps.setString(4,user.getGender());
-            ps.setDate(5, (java.sql.Date) user.getBirthDate());
-            ps.setInt(6,user.getId());
-        } catch (SQLException e) {
-            e.printStackTrace();
+        try{
+            Statement createDbStatement = con.createStatement();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String dbRequire="update userTB set username='"+user.getUsername()+"',password='"+user.getPassword()+"',email='"+user.getEmail()+"',gender='"+user.getGender()+"',birthdate='"+simpleDateFormat.format(user.getBirthDate())+"' where id="+user.getId();
+            createDbStatement.executeUpdate(dbRequire);
+            System.out.println("update "+user.getId()+"success");
+            return 1;
+        }catch(Exception e) {
+            System.out.println(e);
         }
-        return ps.executeUpdate();
+        return 0;
     }
 
-    @Override
     public User findById(Connection con, Integer id) throws SQLException {
-        User user = null;
-        String sqlQuery="select * from userTB where id=?";
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(sqlQuery);
-            ps.setInt(1,id);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setGender(rs.getString("gender"));
-                user.setBirthDate(rs.getDate("birthdate"));
+        try{
+            Statement createDbStatement = con.createStatement();
+            String dbRequire="select * from userTB where id="+id.toString();
+            ResultSet resultDb=createDbStatement.executeQuery(dbRequire);
+            while(resultDb.next()) {
+                return new User(resultDb.getInt("id"),resultDb.getString("username"),resultDb.getString("password"),resultDb.getString("email"),resultDb.getString("gender"),resultDb.getDate("birthdate"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch(Exception e) {
+            System.out.println(e);
         }
-        return user;
+        return null;
     }
 
-    @Override
     public User findByUsernamePassword(Connection con, String username, String password) throws SQLException {
-        User user = null;
-        String sqlQuery="select * from userTB where username=? and password=?";
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(sqlQuery);
-            ps.setString(1,username);
-            ps.setString(2,password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setGender(rs.getString("gender"));
-                user.setBirthDate(rs.getDate("birthdate"));
+        String dbRequire="select * from userTB where username='"+username+"' and password='"+password+"'";
+        User user=null;
+        try{
+            PreparedStatement st=con.prepareStatement(dbRequire);
+            ResultSet resultDb=st.executeQuery();
+            if(resultDb.next()) {
+                user=new User(resultDb.getInt("id"),resultDb.getString("username"),resultDb.getString("password"),resultDb.getString("email"),resultDb.getString("gender"),resultDb.getDate("birthdate"));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (Exception e) {
+            System.out.println(e);
         }
         return user;
     }
 
-    @Override
     public List<User> findByUsername(Connection con, String username) throws SQLException {
-        List<User> listuser = null;
-        String sqlQuery="select * from userTB where username=?";
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(sqlQuery);
-            ps.setString(1,username);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setGender(rs.getString("gender"));
-                user.setBirthDate(rs.getDate("birthdate"));
-                listuser.add(user);
+        String dbRequire="select * from userTB where username='"+username+"'";
+        List<User> user=null;
+        try{
+            PreparedStatement st=con.prepareStatement(dbRequire);
+            ResultSet resultDb=st.executeQuery();
+            if(resultDb.next()) {
+                user.add(new User(resultDb.getInt("id"),resultDb.getString("username"),
+                        resultDb.getString("password"),resultDb.getString("email"),
+                        resultDb.getString("gender"),resultDb.getDate("birthdate")));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (Exception e) {
+            System.out.println(e);
         }
-        return listuser;
+        return user;
     }
 
-    @Override
     public List<User> findByPassword(Connection con, String password) throws SQLException {
-        List<User> listuser = null;
-        String sqlQuery="select * from userTB where password=?";
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(sqlQuery);
-            ps.setString(1,password);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setGender(rs.getString("gender"));
-                user.setBirthDate(rs.getDate("birthdate"));
-                listuser.add(user);
+        String dbRequire="select * from userTB where password='"+password+"'";
+        List<User> user=null;
+        try{
+            PreparedStatement st=con.prepareStatement(dbRequire);
+            ResultSet resultDb=st.executeQuery();
+            if(resultDb.next()) {
+                user.add(new User(resultDb.getInt("id"),resultDb.getString("username"),
+                        resultDb.getString("password"),resultDb.getString("email"),
+                        resultDb.getString("gender"),resultDb.getDate("birthdate")));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (Exception e) {
+            System.out.println(e);
         }
-        return listuser;
+        return user;
     }
 
-    @Override
     public List<User> findByEmail(Connection con, String email) throws SQLException {
-        List<User> listuser = null;
-        String sqlQuery="select * from userTB where email=?";
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(sqlQuery);
-            ps.setString(1,email);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setGender(rs.getString("gender"));
-                user.setBirthDate(rs.getDate("birthdate"));
-                listuser.add(user);
+        String dbRequire="select * from userTB where email='"+email+"'";
+        List<User> user=null;
+        try{
+            PreparedStatement st=con.prepareStatement(dbRequire);
+            ResultSet resultDb=st.executeQuery();
+            if(resultDb.next()) {
+                user.add(new User(resultDb.getInt("id"),resultDb.getString("username"),
+                        resultDb.getString("password"),resultDb.getString("email"),
+                        resultDb.getString("gender"),resultDb.getDate("birthdate")));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (Exception e) {
+            System.out.println(e);
         }
-        return listuser;
+        return user;
     }
 
-    @Override
     public List<User> findByGender(Connection con, String gender) throws SQLException {
-        List<User> listuser = null;
-        String sqlQuery="select * from userTB where gender=?";
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(sqlQuery);
-            ps.setString(1,gender);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setGender(rs.getString("gender"));
-                user.setBirthDate(rs.getDate("birthdate"));
-                listuser.add(user);
+        String dbRequire="select * from userTB where sex='"+gender+"'";
+        List<User> user=null;
+        try{
+            PreparedStatement st=con.prepareStatement(dbRequire);
+            ResultSet resultDb=st.executeQuery();
+            if(resultDb.next()) {
+                user.add(new User(resultDb.getInt("id"),resultDb.getString("username"),
+                        resultDb.getString("password"),resultDb.getString("email"),
+                        resultDb.getString("gender"),resultDb.getDate("birthdate")));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (Exception e) {
+            System.out.println(e);
         }
-        return listuser;
+        return user;
     }
 
-    @Override
     public List<User> findByBirthdate(Connection con, Date birthDate) throws SQLException {
-        List<User> listuser = null;
-        String sqlQuery="select * from userTB where birthdate=?";
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(sqlQuery);
-            ps.setDate(1, (java.sql.Date) birthDate);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setGender(rs.getString("gender"));
-                user.setBirthDate(rs.getDate("birthdate"));
-                listuser.add(user);
+        String dbRequire="select * from userTB where birth='"+birthDate+"'";
+        List<User> user=null;
+        try{
+            PreparedStatement st=con.prepareStatement(dbRequire);
+            ResultSet resultDb=st.executeQuery();
+            if(resultDb.next()) {
+                user.add(new User(resultDb.getInt("id"),resultDb.getString("username"),
+                        resultDb.getString("password"),resultDb.getString("email"),
+                        resultDb.getString("gender"),resultDb.getDate("birthdate")));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (Exception e) {
+            System.out.println(e);
         }
-        return listuser;
+        return user;
     }
 
-    @Override
     public List<User> findAllUser(Connection con) throws SQLException {
-        List<User> listuser = null;
-        String sqlQuery="select * from userTB";
-        PreparedStatement ps = null;
-        try {
-            ps = con.prepareStatement(sqlQuery);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setUsername(rs.getString("username"));
-                user.setPassword(rs.getString("password"));
-                user.setEmail(rs.getString("email"));
-                user.setGender(rs.getString("gender"));
-                user.setBirthDate(rs.getDate("birthdate"));
-                listuser.add(user);
+        String dbRequire="select * from userTB ";
+        List<User> user=null;
+        try{
+            PreparedStatement st=con.prepareStatement(dbRequire);
+            ResultSet resultDb=st.executeQuery();
+            if(resultDb.next()) {
+                user.add(new User(resultDb.getInt("id"),resultDb.getString("username"),
+                        resultDb.getString("password"),resultDb.getString("email"),
+                        resultDb.getString("gender"),resultDb.getDate("birthdate")));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        }catch (Exception e) {
+            System.out.println(e);
         }
-        return listuser;
+        return user;
     }
 }

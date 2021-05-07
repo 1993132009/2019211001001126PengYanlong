@@ -13,27 +13,11 @@ import java.io.PrintWriter;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 
-@WebServlet(name = "RegisterServlet",value="/Register")
+@WebServlet(name = "RegisterServlet",value="/register")
 public class RegisterServlet extends HttpServlet {
     Connection con = null;
     public void init() throws ServletException {
         super.init();
-        /*
-        ServletContext context = getServletContext();
-        String driver = context.getInitParameter("driver");
-        String url = context.getInitParameter("url");
-        String username = context.getInitParameter("username");
-        String password = context.getInitParameter("password");
-        try {
-            Class.forName(driver);
-            con = DriverManager.getConnection(url,username,password);
-            System.out.println("RGinit()-->"+con);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        */
         con = (Connection) getServletContext().getAttribute("con");
     }
 
@@ -44,25 +28,9 @@ public class RegisterServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String email = request.getParameter("email");
-        String gender = request.getParameter("sex");
-        String birth = request.getParameter("birth");
+        String gender = request.getParameter("gender");
+        String birth = request.getParameter("birthDate");
         java.sql.Date birthD = java.sql.Date.valueOf(birth);
-        /*
-        out.println("<html><body>");
-        System.out.println("-->I am in doPost()");
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        out.println("Date and Time: " + df.format(new Date()) + "<br>" + "<br>");
-        try {
-            out.println("username is : " + username + "<br>");
-            out.println("password is : " + password + "<br>");
-            out.println("email is : " + email + "<br>");
-            out.println("gender is : " + gender + "<br>");
-            out.println("birth is : " + birth + "<br>");
-        } catch (NumberFormatException e) {
-            out.println("input is error！" + "<br>");
-        }
-        out.println("</html></body>");
-        */
 
         String sqlAdd = "insert into userTB values(?,?,?,?,?)";
         try {
@@ -77,44 +45,24 @@ public class RegisterServlet extends HttpServlet {
             e.printStackTrace();
         }
 
+        /*
         String sqlQuery="select * from userTB";
         try {
             ResultSet rs=con.createStatement().executeQuery(sqlQuery);
-            /*
-            out.print("<table border="+3+">");
-            out.print("<tr>");
-            out.print("<th>ID</th>");
-            out.print("<th>UserName</th>");
-            out.print("<th>PassWord</th>");
-            out.print("<th>Email</th>");
-            out.print("<th>Gender</th>");
-            out.print("<th>Birth</th>");
-            out.print("</tr>");
-            while (rs.next()) {
-                out.print("<tr>");
-                out.print("<td>"+rs.getInt("id")+"</td>");
-                out.print("<td>"+rs.getString("username")+"</td>");
-                out.print("<td>"+rs.getString("password")+"</td>");
-                out.print("<td>"+rs.getString("email")+"</td>");
-                out.print("<td>"+rs.getString("gender")+"</td>");
-                out.print("<td>"+rs.getDate("birthdate")+"</td>");
-                out.print("<tr>");
-            }
-            out.print("</table>");
-            */
             request.setAttribute("rsname",rs);
             request.getRequestDispatcher("userList.jsp").forward(request,response);
             System.out.println("I am in RegisterServlet -->doPost()--> after forward()");
-
-            response.sendRedirect("Login.jsp");
-
+            response.sendRedirect("login.jsp");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        */
+        response.sendRedirect("login");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request,response);
+        //doPost(request,response);
+        request.getRequestDispatcher("WEB-INF/views/register.jsp").forward(request,response);
     }
 
     public void destroy() {

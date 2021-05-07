@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
 
-@WebServlet(name = "LoginServlet",value = "/Login")
+@WebServlet(name = "LoginServlet",value = "/login")
 public class LoginServlet extends HttpServlet {
     Connection con = null;
     public void init() throws ServletException {
@@ -74,7 +74,7 @@ public class LoginServlet extends HttpServlet {
 
             } else {
                 request.setAttribute("message","Username or Password Error!!!");
-                request.getRequestDispatcher("WEB-INF/views/Login.jsp").forward(request,response);
+                request.getRequestDispatcher("WEB-INF/views/login.jsp").forward(request,response);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -113,7 +113,7 @@ public class LoginServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //doPost(request,response);
-        request.getRequestDispatcher("WEB-INF/views/Login.jsp").forward(request,response);
+        request.getRequestDispatcher("WEB-INF/views/login.jsp").forward(request,response);
     }
 
     public void destroy() {

@@ -1,6 +1,7 @@
 package com.Pengyanlong.week2.demo;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
@@ -10,8 +11,7 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-//now its just a java class
-//extend HttpServlet
+@WebServlet(name = "HelloWorldServlet",value = "/hello")
 public class HelloWorldServlet extends HttpServlet {
     public void doGet(HttpServletRequest request,HttpServletResponse response)
             throws ServletException,IOException {
