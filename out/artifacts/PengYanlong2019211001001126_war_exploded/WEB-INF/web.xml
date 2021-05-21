@@ -24,6 +24,7 @@
         <welcome-file>home</welcome-file>
     </welcome-file-list>
 
+    <!--
     <servlet>
         <servlet-name>updateUser</servlet-name>
         <jsp-file>/WEB-INF/views/updateUser.jsp</jsp-file>
@@ -32,6 +33,7 @@
         <servlet-name>updateUser</servlet-name>
         <url-pattern>/updateUser.jsp</url-pattern>
     </servlet-mapping>
+    -->
 
     <!--
     <filter>

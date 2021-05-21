@@ -24,7 +24,7 @@
 <br/>
 <a href="Myjsp.jsp">HelloWorldSrevlet</a>
 <br/>
-<a href="MMyjsp.jsp">MMyjspSrevlet</a>
+<a href="Jsp.jsp">JspSrevlet</a>
 <br/>
 <a href="config">ConfigDemoSrevlet</a>
 <br/>
