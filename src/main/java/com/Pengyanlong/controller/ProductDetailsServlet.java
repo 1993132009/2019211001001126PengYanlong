@@ -19,6 +19,7 @@ public class ProductDetailsServlet extends HttpServlet {
     public void init() throws ServletException {
         con=(Connection)getServletContext().getAttribute("con");
     }
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id=request.getParameter("id")!=null?Integer.parseInt(request.getParameter("id")):0;
         ProductDao productDao=new ProductDao();
